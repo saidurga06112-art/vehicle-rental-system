@@ -1,0 +1,16 @@
+{
+  "name": "vehicle-rental-management",
+  "version": "1.0.0",
+  "description": "Vehicle rental CRUD website using Express and MySQL",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "mysql2": "^3.12.0"
+  }
+}

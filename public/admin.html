@@ -1,0 +1,533 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Admin | DriveEasy</title>
+
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="site-header">
+
+    <a class="brand" href="/">
+      <span class="brand-mark">D</span>
+      DriveEasy
+    </a>
+
+    <nav>
+      <a href="/">Home</a>
+      <a href="/vehicles.html">Vehicles</a>
+      <a href="/booking.html">Book</a>
+      <a class="active" href="/admin.html">Admin</a>
+    </nav>
+
+    <span class="admin-label">
+      <span class="dot"></span>
+      ADMIN PANEL
+    </span>
+
+  </header>
+
+
+  <!-- MAIN -->
+
+  <main class="admin-main">
+
+    <!-- PAGE TITLE -->
+
+    <section class="admin-top">
+
+      <div>
+
+        <span class="eyebrow">
+          MANAGEMENT
+        </span>
+
+        <h1>
+          Fleet <em>control.</em>
+        </h1>
+
+        <p>
+          Add, update, and remove vehicle records from your rental fleet.
+        </p>
+
+      </div>
+
+      <button
+        id="newVehicleBtn"
+        class="button button-primary"
+      >
+        ＋ Add vehicle
+      </button>
+
+    </section>
+
+
+    <!-- STATISTICS -->
+
+    <div class="dashboard-stats">
+
+      <div class="stat-card">
+
+        <span>Total vehicles</span>
+
+        <strong id="totalVehicles">0</strong>
+
+        <small>Fleet records</small>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span>Available</span>
+
+        <strong id="availableVehicles">0</strong>
+
+        <small>Ready to rent</small>
+
+      </div>
+
+
+      <div class="stat-card">
+
+        <span>Rented / service</span>
+
+        <strong id="busyVehicles">0</strong>
+
+        <small>Not available</small>
+
+      </div>
+
+    </div>
+
+
+    <!-- VEHICLE INVENTORY -->
+
+    <section class="panel table-panel">
+
+      <div class="table-heading">
+
+        <div>
+
+          <h2>Vehicle inventory</h2>
+
+          <p>All registered vehicles</p>
+
+        </div>
+
+        <input
+          id="adminSearch"
+          type="search"
+          placeholder="Search inventory…"
+          aria-label="Search inventory"
+        >
+
+      </div>
+
+
+      <div class="table-scroll">
+
+        <table class="inventory-table">
+
+          <thead>
+
+            <tr>
+
+              <th>Vehicle</th>
+
+              <th>Veh ID</th>
+
+              <th>Number</th>
+
+              <th>Time</th>
+
+              <th>Model</th>
+
+              <th>Rent / day</th>
+
+              <th>Status</th>
+
+              <th>Actions</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="vehicleTableBody">
+
+            <tr>
+
+              <td colspan="8" class="empty-cell">
+                Loading inventory…
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+
+      <div
+        id="adminMessage"
+        class="message table-message"
+        role="status"
+      ></div>
+
+    </section>
+
+
+    <!-- CUSTOMER BOOKINGS -->
+
+    <section class="panel bookings-panel">
+
+      <div class="table-heading">
+
+        <div>
+
+          <h2>Customer bookings</h2>
+
+          <p>Recent reservations and status</p>
+
+        </div>
+
+        <button
+          id="refreshBookings"
+          class="button button-ghost button-small"
+        >
+          Refresh
+        </button>
+
+      </div>
+
+
+      <div class="table-scroll">
+
+        <table class="inventory-table">
+
+          <thead>
+
+            <tr>
+
+              <th>Booking</th>
+
+              <th>Customer</th>
+
+              <th>Vehicle</th>
+
+              <th>Pickup</th>
+
+              <th>Return</th>
+
+              <th>Total</th>
+
+              <th>Status</th>
+
+              <th>Update</th>
+
+            </tr>
+
+          </thead>
+
+
+          <tbody id="bookingTableBody">
+
+            <tr>
+
+              <td colspan="8" class="empty-cell">
+                Loading bookings…
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ADD / EDIT VEHICLE MODAL -->
+
+  <div
+    id="vehicleModal"
+    class="modal"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal-backdrop"
+      data-close-modal
+    ></div>
+
+
+    <section
+      class="modal-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modalTitle"
+    >
+
+      <button
+        class="modal-close"
+        type="button"
+        data-close-modal
+        aria-label="Close"
+      >
+        ×
+      </button>
+
+
+      <span class="eyebrow">
+        FLEET RECORD
+      </span>
+
+
+      <h2 id="modalTitle">
+        Add vehicle
+      </h2>
+
+
+      <!-- VEHICLE FORM -->
+
+      <form id="vehicleForm">
+
+        <input
+          type="hidden"
+          name="id"
+        >
+
+
+        <div class="form-grid">
+
+
+          <!-- VEHICLE NAME -->
+
+          <label class="field">
+
+            Vehicle Name
+
+            <input
+              type="text"
+              name="veh_name"
+              required
+              maxlength="100"
+              placeholder="Maruti Swift"
+            >
+
+          </label>
+
+
+          <!-- VEHICLE NUMBER -->
+
+          <label class="field">
+
+            Vehicle Number
+
+            <input
+              type="text"
+              name="vehicle_num"
+              required
+              maxlength="30"
+              placeholder="AP02AB1234"
+            >
+
+          </label>
+
+
+          <!-- VEHICLE TIME -->
+
+          <label class="field">
+
+            Vehicle Time
+
+            <input
+              type="text"
+              name="veh_time"
+              required
+              placeholder="24 Hours"
+            >
+
+          </label>
+
+
+          <!-- VEHICLE MODEL -->
+
+          <label class="field">
+
+            Vehicle Model
+
+            <input
+              type="text"
+              name="veh_model"
+              required
+              maxlength="100"
+              placeholder="Swift VXI"
+            >
+
+          </label>
+
+
+          <!-- RENT -->
+
+          <label class="field">
+
+            Rent per day (₹)
+
+            <input
+              type="number"
+              name="rent_per_day"
+              required
+              min="1"
+              step="0.01"
+              placeholder="1500"
+            >
+
+          </label>
+
+
+          <!-- STATUS -->
+
+          <label class="field">
+
+            Status
+
+            <select
+              name="status"
+              required
+            >
+
+              <option value="Available">
+                Available
+              </option>
+
+              <option value="Rented">
+                Rented
+              </option>
+
+              <option value="Maintenance">
+                Maintenance
+              </option>
+
+            </select>
+
+          </label>
+
+
+          <!-- IMAGE -->
+
+          <label class="field">
+
+            Image URL
+
+            <input
+              type="text"
+              name="image_url"
+              placeholder="images/swift.jpg"
+            >
+
+            <small>
+              Use an image from your public/images folder.
+            </small>
+
+          </label>
+
+
+        </div>
+
+
+        <!-- BUTTONS -->
+
+        <div class="modal-actions">
+
+          <button
+            type="button"
+            class="button button-ghost"
+            data-close-modal
+          >
+            Cancel
+          </button>
+
+
+          <button
+            type="submit"
+            class="button button-primary"
+          >
+
+            Save vehicle
+
+            <span>→</span>
+
+          </button>
+
+        </div>
+
+
+        <!-- MESSAGE -->
+
+        <div
+          id="vehicleFormMessage"
+          class="message"
+        ></div>
+
+
+      </form>
+
+    </section>
+
+  </div>
+
+
+  <!-- FOOTER -->
+
+  <footer class="footer">
+
+    <a class="brand" href="/">
+
+      <span class="brand-mark">D</span>
+
+      DriveEasy
+
+    </a>
+
+    <p>
+      Fleet management workspace.
+    </p>
+
+    <span>
+      © 2026 DriveEasy Vehicle Rentals
+    </span>
+
+  </footer>
+
+
+  <!-- JAVASCRIPT -->
+
+  <script src="js/common.js"></script>
+
+  <script src="js/admin.js"></script>
+
+
+</body>
+
+</html>
